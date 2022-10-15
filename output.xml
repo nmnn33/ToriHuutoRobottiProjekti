@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 5.0.1 (Python 3.9.13 on win32)" generated="20221011 00:34:30.464" rpa="false" schemaversion="3">
+<suite id="s1" name="Tasks" source="d:\Code\ToriHuutoRobottiProjekti\tasks.robot">
+<test id="s1-t1" name="Click button in frame" line="6">
+<kw name="Open Browser" library="SeleniumLibrary">
+<arg>https://www.tori.fi/</arg>
+<arg>firefox</arg>
+<doc>Opens a new browser instance to the optional ``url``.</doc>
+<msg timestamp="20221011 00:34:31.572" level="INFO">Opening browser 'firefox' to base url 'https://www.tori.fi/'.</msg>
+<msg timestamp="20221011 00:34:31.582" level="INFO">Firefox driver log is always forced to to: D:\Code\ToriHuutoRobottiProjekti\geckodriver-1.log</msg>
+<msg timestamp="20221011 00:34:31.594" level="INFO">Cannot capture screenshot because no browser is open.</msg>
+<msg timestamp="20221011 00:34:31.595" level="FAIL">WebDriverException: Message: 'geckodriver' executable needs to be in PATH. 
+</msg>
+<status status="FAIL" starttime="20221011 00:34:31.571" endtime="20221011 00:34:31.597"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>5 seconds</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.597" endtime="20221011 00:34:31.597"/>
+</kw>
+<kw name="Select Frame" library="SeleniumLibrary">
+<arg>//iframe[@title="SP Consent Message"]</arg>
+<doc>Sets frame identified by ``locator`` as the current frame.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.598" endtime="20221011 00:34:31.598"/>
+</kw>
+<kw name="Get WebElement" library="SeleniumLibrary">
+<var>${button}</var>
+<arg>//button[@title="Hyväksy kaikki evästeet"]</arg>
+<doc>Returns the first WebElement matching the given ``locator``.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.598" endtime="20221011 00:34:31.598"/>
+</kw>
+<kw name="Click Element" library="SeleniumLibrary">
+<arg>${button}</arg>
+<doc>Click the element identified by ``locator``.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.598" endtime="20221011 00:34:31.599"/>
+</kw>
+<kw name="Unselect Frame" library="SeleniumLibrary">
+<doc>Sets the main frame as the current frame.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.599" endtime="20221011 00:34:31.599"/>
+</kw>
+<kw name="Sleep" library="BuiltIn">
+<arg>5 seconds</arg>
+<doc>Pauses the test executed for the given time.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.599" endtime="20221011 00:34:31.599"/>
+</kw>
+<kw name="Capture Page Screenshot" library="SeleniumLibrary">
+<doc>Takes a screenshot of the current page and embeds it into a log file.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.599" endtime="20221011 00:34:31.600"/>
+</kw>
+<kw name="Close All Browsers" library="SeleniumLibrary">
+<doc>Closes all open browsers and resets the browser cache.</doc>
+<status status="NOT RUN" starttime="20221011 00:34:31.600" endtime="20221011 00:34:31.600"/>
+</kw>
+<status status="FAIL" starttime="20221011 00:34:31.570" endtime="20221011 00:34:31.600">WebDriverException: Message: 'geckodriver' executable needs to be in PATH. 
+</status>
+</test>
+<status status="FAIL" starttime="20221011 00:34:30.475" endtime="20221011 00:34:31.601"/>
+</suite>
+<statistics>
+<total>
+<stat pass="0" fail="1" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="0" fail="1" skip="0" id="s1" name="Tasks">Tasks</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
