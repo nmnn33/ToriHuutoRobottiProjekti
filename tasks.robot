@@ -13,6 +13,11 @@ Library             RPA.Excel.Files
 ${selain}       Firefox
 ${url}          https://www.tori.fi/
 ${hakusana}     Nintendo Switch
+@{otsikko}
+@{hinta}
+@{linkki}
+@{päivä}
+${column}       ${2}
 
 
 *** Tasks ***
@@ -21,8 +26,8 @@ huuto.net/tori.fi hakusana ilmoituksien taltioija Excel-tiedostoon
     Accept terms and services
     Hakusana haku
     Tallenna ilmoitukset
-    #Laita ilmoitukset dictionaryyn
     Täytä Excel ilmoituksilla
+    Robotti sulkeutuu
 
 
 *** Keywords ***
@@ -44,11 +49,6 @@ Hakusana haku
 Tallenna ilmoitukset
     #Tallenna ilmoitukset nappaavat ensin ilmoituksen elementin, ja sitten ottavat siitå tekstit muuttijaan
     #Listataaan: otsikko, hinta, linkki, päivämäärä
-    @{otsikko}=    Create List
-    @{hinta}=    Create List
-    @{linkki1}=    Create List
-    @{linkki2}=    Create List
-    @{päivä}=    Create List
     #Tästä alkaa for loopit, jotka täyttävät yllä luodut listat
     Wait Until Page Contains Element    //a[@class=" item_row_flex odd_row"]
     ${ilmoitusOtsikko}=    Get WebElements    //div[@class="li-title"]
@@ -63,18 +63,11 @@ Tallenna ilmoitukset
         Append To List    ${hinta}    ${hintaan}
         Log    ${hinta}
     END
-    #Kaksi eri linkki listaa, sillä tori.fi jakaa ne kahtia
-    ${ilmoitusLinkki1}=    Get WebElements    //a[@class=" item_row_flex"]
-    FOR    ${element}    IN    @{ilmoitusLinkki1}
-        ${linkkiin1}=    Get Element Attribute    ${element}    href
-        Append To List    ${linkki1}    ${linkkiin1}
-        Log    ${linkki1}
-    END
-    ${ilmoitusLinkki2}=    Get WebElements    //a[@class=" item_row_flex odd_row"]
-    FOR    ${element}    IN    @{ilmoitusLinkki2}
-        ${linkkiin2}=    Get Element Attribute    ${element}    href
-        Append To List    ${linkki2}    ${linkkiin2}
-        Log    ${linkki2}
+    ${ilmoitusLinkki}=    Get WebElements    //a[contains(@class, 'item_row_flex')]
+    FOR    ${element}    IN    @{ilmoitusLinkki}
+        ${linkkiin}=    Get Element Attribute    ${element}    href
+        Append To List    ${linkki}    ${linkkiin}
+        Log    ${linkki}
     END
     ${ilmoitusPäivä}=    Get WebElements    //div[@class="date_image"]
     FOR    ${element}    IN    @{ilmoitusPäivä}
@@ -82,12 +75,7 @@ Tallenna ilmoitukset
         Append To List    ${päivä}    ${päivään}
         Log    ${päivä}
     END
-
-#Laita ilmoitukset dictionaryyn
-#    ${dict}=    create dictionary
-#    FOR    ${element}    IN    @{dict}
-#    Set To Dictionary    ${dict}    otsikko=    hinta=    päivä=    linkki=
-#    END
+    Close Browser
 
 Täytä Excel ilmoituksilla
     #Luodaan uusi taulukko aina, tehdään headerit ja täytetään listan tavaroilla
@@ -97,6 +85,25 @@ Täytä Excel ilmoituksilla
     Set Worksheet Value    1    3    Linkki (Paina avataksesi)
     Set Worksheet Value    1    4    Päivämäärä
     FOR    ${element}    IN    @{otsikko}
-        Log    ${element}
+        Set Worksheet Value    ${column}    A    ${element}
+        ${column}=    Evaluate    ${column} + 1
+    END
+    ${column}=    Set Variable    2
+    FOR    ${element}    IN    @{hinta}
+        Set Worksheet Value    ${column}    B    ${element}
+        ${column}=    Evaluate    ${column} + 1
+    END
+    ${column}=    Set Variable    2
+    FOR    ${element}    IN    @{linkki}
+        Set Worksheet Value    ${column}    C    ${element}
+        ${column}=    Evaluate    ${column} + 1
+    END
+    ${column}=    Set Variable    2
+    FOR    ${element}    IN    @{päivä}
+        Set Worksheet Value    ${column}    D    ${element}
+        ${column}=    Evaluate    ${column} + 1
     END
     Save Workbook
+
+Robotti sulkeutuu
+    Log To Console    Robotti on valmis!
