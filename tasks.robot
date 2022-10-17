@@ -7,6 +7,7 @@ Library             RPA.Excel.Files
 Library             Collections
 Library             RPA.Desktop
 Library             RPA.Excel.Files
+Library             RPA.Netsuite
 
 
 *** Variables ***
@@ -50,30 +51,40 @@ Tallenna ilmoitukset
     #Tallenna ilmoitukset nappaavat ensin ilmoituksen elementin, ja sitten ottavat siitå tekstit muuttijaan
     #Listataaan: otsikko, hinta, linkki, päivämäärä
     #Tästä alkaa for loopit, jotka täyttävät yllä luodut listat
-    Wait Until Page Contains Element    //a[@class=" item_row_flex odd_row"]
-    ${ilmoitusOtsikko}=    Get WebElements    //div[@class="li-title"]
-    FOR    ${element}    IN    @{ilmoitusOtsikko}
-        ${otsikkoon}=    Get Text    ${element}
-        Append To List    ${otsikko}    ${otsikkoon}
-        Log    ${otsikko}
-    END
-    ${ilmoitusHinta}=    Get WebElements    //p[@class="list_price ineuros"]
-    FOR    ${element}    IN    @{ilmoitusHinta}
-        ${hintaan}=    Get Text    ${element}
-        Append To List    ${hinta}    ${hintaan}
-        Log    ${hinta}
-    END
-    ${ilmoitusLinkki}=    Get WebElements    //a[contains(@class, 'item_row_flex')]
-    FOR    ${element}    IN    @{ilmoitusLinkki}
-        ${linkkiin}=    Get Element Attribute    ${element}    href
-        Append To List    ${linkki}    ${linkkiin}
-        Log    ${linkki}
-    END
-    ${ilmoitusPäivä}=    Get WebElements    //div[@class="date_image"]
-    FOR    ${element}    IN    @{ilmoitusPäivä}
-        ${päivään}=    Get Text    ${element}
-        Append To List    ${päivä}    ${päivään}
-        Log    ${päivä}
+    FOR    ${i}    IN RANGE    999
+        Wait Until Page Contains Element    //a[@class=" item_row_flex odd_row"]
+        ${ilmoitusOtsikko}=    Get WebElements    //div[@class="li-title"]
+        FOR    ${element}    IN    @{ilmoitusOtsikko}
+            ${otsikkoon}=    Get Text    ${element}
+            Append To List    ${otsikko}    ${otsikkoon}
+            Log    ${otsikko}
+        END
+        ${ilmoitusHinta}=    Get WebElements    //p[@class="list_price ineuros"]
+        FOR    ${element}    IN    @{ilmoitusHinta}
+            ${hintaan}=    Get Text    ${element}
+            Append To List    ${hinta}    ${hintaan}
+            Log    ${hinta}
+        END
+        ${ilmoitusLinkki}=    Get WebElements    //a[contains(@class, 'item_row_flex')]
+        FOR    ${element}    IN    @{ilmoitusLinkki}
+            ${linkkiin}=    Get Element Attribute    ${element}    href
+            Append To List    ${linkki}    ${linkkiin}
+            Log    ${linkki}
+        END
+        ${ilmoitusPäivä}=    Get WebElements    //div[@class="date_image"]
+        FOR    ${element}    IN    @{ilmoitusPäivä}
+            ${päivään}=    Get Text    ${element}
+            Append To List    ${päivä}    ${päivään}
+            Log    ${päivä}
+        END
+        #Painaa Seuraava sivu nappia ja tarkistaa, että onko se olemassa. Jos ei, loppuu loop.
+        ${onkoSeuraavaNappi}=    Run Keyword And Return Status
+        ...    Page Should Contain Element
+        ...    //a[.="Seuraava sivu »"]
+        Exit For Loop If    ${onkoSeuraavaNappi} == False
+        IF    ${onkoSeuraavaNappi} == True
+            Click Element    //a[.="Seuraava sivu »"]
+        END
     END
     Close Browser
 
